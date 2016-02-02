@@ -941,6 +941,66 @@
          };
       };
 
+      // Releases API
+      // =======
+
+      Github.Releases = function (options) {
+        var path = '/repos/' + options.user + '/' + options.repo + '/releases';
+
+        // List releases for a repository
+        this.list = function (options, cb) {
+          var query = [];
+
+          for (var key in options) {
+            if (options.hasOwnProperty(key)) {
+              query.push(encodeURIComponent(key) + '=' + encodeURIComponent(options[key]));
+            }
+          }
+
+          _requestAllPages(path + '?' + query.join('&'), cb);
+        };
+
+        // Get a single release
+        this.read = function (id, options, cb) {
+          _request('GET', path + '/' + id,  options, cb);
+        };
+
+        // Get the latest release
+        this.latest = function (options, cb) {
+          _request('GET', path + '/latest',  options, cb);
+        }
+
+        // Get a release by tag name
+        this.tags = function (tag, options, cb) {
+          _request('GET', path + '/tags/' + tag,  options, cb);
+        }
+
+        // Create a release
+        this.create = function (options, cb) {
+          _request('POST', path,  options, cb);
+        }
+
+        // Edit a release
+        this.update = function (id, options, cb) {
+          _request('PATCH', path + '/' + id,  options, cb);
+        }
+
+        // Delete a release
+        this.delete = function (id, options, cb) {
+          _request('DELETE', path + '/' + id,  options, cb);
+        }
+
+        // Release Assets API
+        // ======
+        // List assets for a release
+        // Upload a release asset
+        // Get a single release asset
+        // Edit a release asset
+        // Delete a release asset
+
+      };
+
+
       // Issues API
       // ==========
 
